@@ -1,6 +1,9 @@
 # Face-Detection-PC-Locker
+
 PC locker that works based on facial recognition
+
 # Setup - Installing Dlib
+
 ** Must be on Python 3.11.3, Visual Studio Community 2022, Microsoft C++ Build Tools must be installed as well **
 
 Download Microsoft C++ Build Tools from: https://visualstudio.microsoft.com/visual-cpp-build-tools/ (make sure you install additional packages for C, C++ programming, which is Packages CMake tools for Windows)
@@ -16,6 +19,7 @@ In the PyCharm project, use "pip install cmake", then "pip install dlib"
 Use this if you have any other issues: https://medium.com/analytics-vidhya/how-to-install-dlib-library-for-python-in-windows-10-57348ba1117f
 
 # To use
+
 In the PyCharm project terminal, install the remaining required packages "pip install (opencv-python, face_recognition)".
 
 Download cutout.png from https://github.com/lucaxbandini/VisageGuard/tree/main/Photos, and "shape_predictor_68_face_landmarks.dat" from https://github.com/italojs/facial-landmarks-recognition/blob/master/shape_predictor_68_face_landmarks.dat, and place them in the same .venv as the current version file.
