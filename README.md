@@ -25,3 +25,9 @@ After this, you should be able to run VisageGuard to try it for yourself!
 # Everything should look like this at the end
 
 ![image](https://github.com/lucaxbandini/VisageGuard/assets/152310492/73d8134e-b338-492b-8ac4-9a4f2ef9215d)
+
+# Current Issues
+
+Pressing "start" will not immediately start detection; give it a few seconds and a window will appear.
+In the settings tab, pressing the "Enter" button on your keyboard will not work; click "Save".
+After your PC locks, press "stop", then press "start" to restart detection.
