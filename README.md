@@ -1,6 +1,6 @@
-# Face-Detection-PC-Locker
+# What is VisageGuard?
 
-PC locker that works based on facial recognition
+VisageGuard is a PC locker that works based on facial recognition. 
 
 # Setup - Installing Dlib
 
