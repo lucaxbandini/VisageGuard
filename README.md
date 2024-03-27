@@ -22,7 +22,7 @@ Download cutout.png from https://github.com/lucaxbandini/VisageGuard/tree/main/P
 
 After this, you should be able to run VisageGuard to try it for yourself!
 
-# Everything should look like this at the end
+# Everything Should Look Like This at the End
 
 ![image](https://github.com/lucaxbandini/VisageGuard/assets/152310492/73d8134e-b338-492b-8ac4-9a4f2ef9215d)
 
@@ -37,3 +37,11 @@ After this, you should be able to run VisageGuard to try it for yourself!
 - After your PC locks, press "Stop", then press "Start" to restart detection.
 
 - Dark mode does not work as intended.
+
+# Features to be Added
+
+- User enrollment
+
+- A proper dark mode
+
+- Enhanced performance and error handling
