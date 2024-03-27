@@ -31,7 +31,7 @@ class BlinkDetectionApp:
         self.video_label = None
 
         # Set window icon
-        icon_path = Path(__file__).parent / "Logo2.jpeg"
+        icon_path = Path(__file__).parent / "cutout.png"
         self.root.iconbitmap(icon_path)
 
         # Create a frame for the video feed and buttons
