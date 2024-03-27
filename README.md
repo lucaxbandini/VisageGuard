@@ -5,6 +5,8 @@ PC locker that works based on facial recognition
 
 Download Microsoft C++ Build Tools from: https://visualstudio.microsoft.com/visual-cpp-build-tools/ (make sure you install additional packages for C, C++ programming, which is Packages CMake tools for Windows)
 
+Download Cmake from: https://cmake.org/download/ (check the box that adds a path for the current user)
+
 Download this file: https://github.com/Murtaza-Saeed/dlib/blob/master/dlib-19.24.1-cp311-cp311-win_amd64.whl, then open terminal where you downloaded it to. Use "py -m pip install .\dlib-19.24.1-cp311-cp311-win_amd64.whl"
 
 In the PyCharm project with the latest version of VisageGuard, use "pip install cmake", then "pip3 install dlib"
