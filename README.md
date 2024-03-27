@@ -1,7 +1,7 @@
 # Face-Detection-PC-Locker
 PC locker that works based on facial recognition
 # To use
-** Must be on Python 3.11.3, Visual Studio Code must be installed as well **
+** Must be on Python 3.11.3, Visual Studio Community 2022 must be installed as well **
 
 Download this file: https://github.com/Murtaza-Saeed/dlib/blob/master/dlib-19.24.1-cp311-cp311-win_amd64.whl, then open terminal where you downloaded it to. Use "py -m pip install .\dlib-19.24.1-cp311-cp311-win_amd64.whl"
 
