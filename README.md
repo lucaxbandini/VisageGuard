@@ -38,10 +38,16 @@ After this, you should be able to run VisageGuard to try it for yourself!
 
 - Dark mode does not work as intended.
 
-# Features to be Added
+# Features to be Added (Listed by Priority)
 
 - User enrollment
-
+  
+- Enhanced performance and error handling
+  
+- A better UI
+  
 - A proper dark mode
 
-- Enhanced performance and error handling
+
+
+
