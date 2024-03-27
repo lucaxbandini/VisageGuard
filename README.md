@@ -28,8 +28,12 @@ After this, you should be able to run VisageGuard to try it for yourself!
 
 # Current Known Issues
 
-Pressing "Start" will not immediately start detection; give it a few seconds and a window will appear.
-Pressing "Stop" while detection is running will cause the program to freeze.
-In the settings tab, pressing the "Enter" button on your keyboard will not work; click "Save".
-After your PC locks, press "Stop", then press "Start" to restart detection.
-Dark mode does not work as intended.
+- Pressing "Start" will not immediately start detection; give it a few seconds and a window will appear.
+
+- Pressing "Stop" while detection is running will cause the program to freeze.
+
+- In the settings tab, pressing the "Enter" button on your keyboard will not work; click "Save".
+
+- After your PC locks, press "Stop", then press "Start" to restart detection.
+
+- Dark mode does not work as intended.
