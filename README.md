@@ -11,6 +11,8 @@ Download this file: https://github.com/Murtaza-Saeed/dlib/blob/master/dlib-19.24
 
 In the PyCharm project with the latest version of VisageGuard, use "pip install cmake", then "pip3 install dlib"
 
+Use this if you have any other issues: https://medium.com/analytics-vidhya/how-to-install-dlib-library-for-python-in-windows-10-57348ba1117f
+
 # To use
 Open the current version of VisageGuard in PyCharm, and install all required packages "pip install (opencv-python, face_recognition)".
 
