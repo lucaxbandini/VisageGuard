@@ -12,7 +12,7 @@ class BlinkDetectionApp:
     def __init__(self, root):
         self.root = root
         self.root.title("VisageGuard – Intelligent Facial Recognition for Enhanced PC Security")
-        self.root.geometry("700x500")
+        self.root.geometry("800x600")
         self.root.minsize(700, 500)  # Allow resizing
         self.dark_mode = False
         self.bg_color = "#FFFFFF"
