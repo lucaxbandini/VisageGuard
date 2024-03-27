@@ -21,3 +21,6 @@ In the PyCharm project terminal, install the remaining required packages "pip in
 Download cutout.png from https://github.com/lucaxbandini/VisageGuard/tree/main/Photos, and "shape_predictor_68_face_landmarks.dat" from https://github.com/italojs/facial-landmarks-recognition/blob/master/shape_predictor_68_face_landmarks.dat, and place them in the same .venv as the current version file.
 
 After this, you should be able to run VisageGuard to try it for yourself!
+
+
+![image](https://github.com/lucaxbandini/VisageGuard/assets/152310492/73d8134e-b338-492b-8ac4-9a4f2ef9215d)
