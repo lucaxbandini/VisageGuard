@@ -2,7 +2,8 @@
 PC locker that works based on facial recognition
 # Installing Dlib
 Download this file: https://github.com/Murtaza-Saeed/dlib/blob/master/dlib-19.24.1-cp311-cp311-win_amd64.whl, then open terminal where you downloaded it to. Use "py -m pip install .\dlib-19.24.1-cp311-cp311-win_amd64.whl"
-In PyCharm, use "pip install cmake", then "pip3 install dlib"
+
+In the PyCharm project with the latest version of VisageGuard, use "pip install cmake", then "pip3 install dlib"
 
 # To use
 ** Must be on Python 3.11.3, Visual Studio Community 2022 must be installed as well **
