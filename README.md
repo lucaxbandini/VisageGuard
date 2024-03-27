@@ -1,7 +1,7 @@
 # Face-Detection-PC-Locker
 PC locker that works based on facial recognition
 # To use
-**Must be on Python 3.11 ** -
+** Must be on Python 3.11 **
 
 Open the current version of VisageGuard in PyCharm, and install all required packages "pip install (cmake, dlib, opencv-python, face_recognition)".
 
