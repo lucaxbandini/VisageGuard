@@ -7,9 +7,9 @@ Download Microsoft C++ Build Tools from: https://visualstudio.microsoft.com/visu
 
 Download Cmake from: https://cmake.org/download/ (check the box that adds a path for the current user)
 
-Download this file: https://github.com/Murtaza-Saeed/dlib/blob/master/dlib-19.24.1-cp311-cp311-win_amd64.whl, then open terminal where you downloaded it to. Use "py -m pip install .\dlib-19.24.1-cp311-cp311-win_amd64.whl"
+Download this file: https://github.com/Murtaza-Saeed/dlib/blob/master/dlib-19.24.1-cp311-cp311-win_amd64.whl, and place it in the project's directory. Then open the PyCharm terminal and use "py -m pip install .\dlib-19.24.1-cp311-cp311-win_amd64.whl"
 
-In the PyCharm project with the latest version of VisageGuard, use "pip install cmake", then "pip3 install dlib"
+In the PyCharm project with the latest version of VisageGuard, use "pip install cmake", then "pip install dlib"
 
 Use this if you have any other issues: https://medium.com/analytics-vidhya/how-to-install-dlib-library-for-python-in-windows-10-57348ba1117f
 
