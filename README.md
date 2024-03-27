@@ -1,6 +1,6 @@
 # Face-Detection-PC-Locker
 PC locker that works based on facial recognition
-# Installing Dlib
+# Setup - Installing Dlib
 ** Must be on Python 3.11.3, Visual Studio Community 2022, Microsoft C++ Build Tools must be installed as well **
 
 Download Microsoft C++ Build Tools from: https://visualstudio.microsoft.com/visual-cpp-build-tools/ (make sure you install additional packages for C, C++ programming, which is Packages CMake tools for Windows)
