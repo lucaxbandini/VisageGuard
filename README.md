@@ -10,17 +10,17 @@ Download PyCharm [here](https://www.jetbrains.com/pycharm/).
 
 Download Visual Studio Community 2022 [here](https://visualstudio.microsoft.com/downloads/?q=build+tools) (make sure to install any workload that explicitly includes C++. Also, fully download this before starting the build tools installation).
 
-Download Microsoft C++ Build Tools [here](https://visualstudio.microsoft.com/visual-cpp-build-tools/) (make sure you install any workload that explicitly includes C++ programming)
+Download Microsoft C++ Build Tools [here](https://visualstudio.microsoft.com/visual-cpp-build-tools/) (make sure you install any workload that explicitly includes C++ programming).
 
 ## Installing Dlib
 
 Download Cmake [here](https://cmake.org/download/) (check the box that adds a path for the current user).
 
-Create a new PyCharm project with the latest version of VisageGuard (when asked to bypass Windows Defender, allow it)
+Create a new PyCharm project with the latest version of VisageGuard (when asked to bypass Windows Defender, allow it).
 
-Download this [file](https://github.com/Murtaza-Saeed/dlib/blob/master/dlib-19.24.1-cp311-cp311-win_amd64.whl), and place it in the project's directory. Then open the PyCharm terminal and use "py -m pip install .\dlib-19.24.1-cp311-cp311-win_amd64.whl"
+Download this [file](https://github.com/Murtaza-Saeed/dlib/blob/master/dlib-19.24.1-cp311-cp311-win_amd64.whl), and place it in the project's directory. Then open the PyCharm terminal and use "py -m pip install .\dlib-19.24.1-cp311-cp311-win_amd64.whl".
 
-In the PyCharm project, use "pip install cmake", then "pip install dlib"
+In the terminal of the PyCharm project, use "pip install cmake", then "pip install dlib".
 
 View this [article](https://medium.com/analytics-vidhya/how-to-install-dlib-library-for-python-in-windows-10-57348ba1117f) if you have any other issues.
 
