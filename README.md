@@ -4,8 +4,6 @@ VisageGuard is a PC locker that works based on facial recognition.
 
 # Setup
 
-## Installing Dlib
-
 ** Must be on Python 3.11.3, Visual Studio Community 2022, Microsoft C++ Build Tools must be installed **
 
 Download PyCharm [here](https://www.jetbrains.com/pycharm/).
@@ -13,6 +11,8 @@ Download PyCharm [here](https://www.jetbrains.com/pycharm/).
 Download Visual Studio Community 2022 [here](https://visualstudio.microsoft.com/downloads/?q=build+tools) (make sure to install any workload that explicitly includes C++. Also, fully download this before starting the build tools installation).
 
 Download Microsoft C++ Build Tools [here](https://visualstudio.microsoft.com/visual-cpp-build-tools/) (make sure you install any workload that explicitly includes C++ programming)
+
+## Installing Dlib
 
 Download Cmake [here](https://cmake.org/download/) (check the box that adds a path for the current user).
 
@@ -24,13 +24,13 @@ In the PyCharm project, use "pip install cmake", then "pip install dlib"
 
 View this [article](https://medium.com/analytics-vidhya/how-to-install-dlib-library-for-python-in-windows-10-57348ba1117f)if you have any other issues.
 
-# To use
+# Setting up the PyCharm project
 
-In the PyCharm project terminal, install the remaining required packages "pip install (opencv-python, face_recognition)".
+In the PyCharm project terminal, install the remaining required packages by using "pip install (opencv-python, face_recognition)".
 
 Download cutout.png from [Photos](https://github.com/lucaxbandini/VisageGuard/tree/main/Photos), and ["shape_predictor_68_face_landmarks.dat"](https://github.com/italojs/facial-landmarks-recognition/blob/master/shape_predictor_68_face_landmarks.dat), and place them in the same .venv as the current version file.
 
-After this, you should be able to run VisageGuard to try it for yourself!
+After this, you can run VisageGuard to try it for yourself by clicking the green run button at the top of the project screen.
 
 # Everything Should Look Like This at the End
 
