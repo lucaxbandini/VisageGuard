@@ -30,7 +30,7 @@ View this [article](https://medium.com/analytics-vidhya/how-to-install-dlib-libr
 
 In the PyCharm project terminal, install the remaining required packages by using "pip install (opencv-python, face_recognition)".
 
-Download cutout.png from [Photos](https://github.com/lucaxbandini/VisageGuard/tree/main/Photos), and ["shape_predictor_68_face_landmarks.dat"](https://github.com/italojs/facial-landmarks-recognition/blob/master/shape_predictor_68_face_landmarks.dat), and place them in the same .venv as the current version file.
+Download cutout.png from [Photos](https://github.com/lucaxbandini/VisageGuard/tree/main/Photos), and [shape_predictor_68_face_landmarks.dat](https://github.com/italojs/facial-landmarks-recognition/blob/master/shape_predictor_68_face_landmarks.dat), and place them in the same .venv as the current version file.
 
 After this, you can run VisageGuard to try it for yourself by clicking the green run button at the top of the project screen.
 
