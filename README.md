@@ -16,7 +16,7 @@ Download Microsoft C++ Build Tools [here](https://visualstudio.microsoft.com/vis
 
 Download Cmake [here](https://cmake.org/download/) (check the box that adds a path for the current user).
 
-Make a new PyCharm project with the latest version of VisageGuard (when asked to bypass Windows Defender, allow it)
+Create a new PyCharm project with the latest version of VisageGuard (when asked to bypass Windows Defender, allow it)
 
 Download this [file](https://github.com/Murtaza-Saeed/dlib/blob/master/dlib-19.24.1-cp311-cp311-win_amd64.whl), and place it in the project's directory. Then open the PyCharm terminal and use "py -m pip install .\dlib-19.24.1-cp311-cp311-win_amd64.whl"
 
