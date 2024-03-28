@@ -22,7 +22,7 @@ Download this [file](https://github.com/Murtaza-Saeed/dlib/blob/master/dlib-19.2
 
 In the PyCharm project, use "pip install cmake", then "pip install dlib"
 
-View this [article](https://medium.com/analytics-vidhya/how-to-install-dlib-library-for-python-in-windows-10-57348ba1117f)if you have any other issues.
+View this [article](https://medium.com/analytics-vidhya/how-to-install-dlib-library-for-python-in-windows-10-57348ba1117f) if you have any other issues.
 
 ## Setting up the PyCharm project
 
