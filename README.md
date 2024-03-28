@@ -24,7 +24,7 @@ In the PyCharm project, use "pip install cmake", then "pip install dlib"
 
 View this [article](https://medium.com/analytics-vidhya/how-to-install-dlib-library-for-python-in-windows-10-57348ba1117f)if you have any other issues.
 
-# Setting up the PyCharm project
+## Setting up the PyCharm project
 
 In the PyCharm project terminal, install the remaining required packages by using "pip install (opencv-python, face_recognition)".
 
