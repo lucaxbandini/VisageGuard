@@ -6,17 +6,17 @@ VisageGuard is a PC locker that works based on facial recognition.
 
 ** Must be on Python 3.11.3, Visual Studio Community 2022, Microsoft C++ Build Tools must be installed **
 
-Download PyCharm [here](https://www.jetbrains.com/pycharm/)
+Download PyCharm [here](https://www.jetbrains.com/pycharm/).
 
-Download Visual Studio Community 2022 here: https://visualstudio.microsoft.com/downloads/?q=build+tools (make sure to install any workload that explicitly includes C++. Also, fully download this before starting the build tools installation)
+Download Visual Studio Community 2022 [here](https://visualstudio.microsoft.com/downloads/?q=build+tools) (make sure to install any workload that explicitly includes C++. Also, fully download this before starting the build tools installation).
 
-Download Microsoft C++ Build Tools from: https://visualstudio.microsoft.com/visual-cpp-build-tools/ (make sure you install any workload that explicitly includes C++ programming)
+Download Microsoft C++ Build Tools [here](https://visualstudio.microsoft.com/visual-cpp-build-tools/) (make sure you install any workload that explicitly includes C++ programming)
 
-Download Cmake from: https://cmake.org/download/ (check the box that adds a path for the current user)
+Download Cmake [here](https://cmake.org/download/) (check the box that adds a path for the current user).
 
 Make a new PyCharm project with the latest version of VisageGuard (when asked to bypass Windows Defender, allow it)
 
-Download this file: https://github.com/Murtaza-Saeed/dlib/blob/master/dlib-19.24.1-cp311-cp311-win_amd64.whl, and place it in the project's directory. Then open the PyCharm terminal and use "py -m pip install .\dlib-19.24.1-cp311-cp311-win_amd64.whl"
+Download this [file](https://github.com/Murtaza-Saeed/dlib/blob/master/dlib-19.24.1-cp311-cp311-win_amd64.whl), and place it in the project's directory. Then open the PyCharm terminal and use "py -m pip install .\dlib-19.24.1-cp311-cp311-win_amd64.whl"
 
 In the PyCharm project, use "pip install cmake", then "pip install dlib"
 
@@ -26,7 +26,7 @@ Use this if you have any other issues: https://medium.com/analytics-vidhya/how-t
 
 In the PyCharm project terminal, install the remaining required packages "pip install (opencv-python, face_recognition)".
 
-Download cutout.png from https://github.com/lucaxbandini/VisageGuard/tree/main/Photos, and "shape_predictor_68_face_landmarks.dat" from https://github.com/italojs/facial-landmarks-recognition/blob/master/shape_predictor_68_face_landmarks.dat, and place them in the same .venv as the current version file.
+Download cutout.png from [Photos](https://github.com/lucaxbandini/VisageGuard/tree/main/Photos), and "shape_predictor_68_face_landmarks.dat" from https://github.com/italojs/facial-landmarks-recognition/blob/master/shape_predictor_68_face_landmarks.dat, and place them in the same .venv as the current version file.
 
 After this, you should be able to run VisageGuard to try it for yourself!
 
