@@ -26,7 +26,7 @@ Use this if you have any other issues: https://medium.com/analytics-vidhya/how-t
 
 In the PyCharm project terminal, install the remaining required packages "pip install (opencv-python, face_recognition)".
 
-Download cutout.png from [Photos](https://github.com/lucaxbandini/VisageGuard/tree/main/Photos), and "shape_predictor_68_face_landmarks.dat" from https://github.com/italojs/facial-landmarks-recognition/blob/master/shape_predictor_68_face_landmarks.dat, and place them in the same .venv as the current version file.
+Download cutout.png from [Photos](https://github.com/lucaxbandini/VisageGuard/tree/main/Photos), and ["shape_predictor_68_face_landmarks.dat"](https://github.com/italojs/facial-landmarks-recognition/blob/master/shape_predictor_68_face_landmarks.dat), and place them in the same .venv as the current version file.
 
 After this, you should be able to run VisageGuard to try it for yourself!
 
