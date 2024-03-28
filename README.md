@@ -2,7 +2,9 @@
 
 VisageGuard is a PC locker that works based on facial recognition. 
 
-# Setup - Installing Dlib
+# Setup
+
+## Installing Dlib
 
 ** Must be on Python 3.11.3, Visual Studio Community 2022, Microsoft C++ Build Tools must be installed **
 
@@ -20,7 +22,7 @@ Download this [file](https://github.com/Murtaza-Saeed/dlib/blob/master/dlib-19.2
 
 In the PyCharm project, use "pip install cmake", then "pip install dlib"
 
-Use this if you have any other issues: https://medium.com/analytics-vidhya/how-to-install-dlib-library-for-python-in-windows-10-57348ba1117f
+View this [article](https://medium.com/analytics-vidhya/how-to-install-dlib-library-for-python-in-windows-10-57348ba1117f)if you have any other issues.
 
 # To use
 
