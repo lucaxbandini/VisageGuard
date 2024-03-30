@@ -1,6 +1,6 @@
 **As recommended, this step-by-step guide will allow you to easily test VisageGuard.**
 
-# Foundation Set-up
+# Preliminary Set-up
 
 ## Downloading Python 3.11.3
 To download Python 3.11.3, follow this [link](https://www.python.org/downloads/release/python-3113/). Scroll down and choose the correct version for your operating system (I have Windows, so I'll choose "Windows installer (64-bit))
@@ -24,3 +24,13 @@ Most importantly, make sure that "C++ CMake tools for Windows" is installed. It 
 
 ## Downloading Microsoft C++ Build Tools
 To download Microsoft C++ Build Tools, follow this [link](https://visualstudio.microsoft.com/visual-cpp-build-tools/).
+
+# Installing Dlib
+Create a new PyCharm project by clicking the Menu button at the top of the PyCharm window, then on "New Project". Leave all setting as default (change name if you'd like).
+
+![image](https://github.com/lucaxbandini/VisageGuard/assets/152310492/05d64660-4b13-44d0-a6e4-4a0492fdcc3b)
+
+A Microsoft Defender alert will appear: click automatically, then yes.
+
+![image](https://github.com/lucaxbandini/VisageGuard/assets/152310492/c4f1cc2d-d7cc-4b45-afda-788007c2d0e0)
+
