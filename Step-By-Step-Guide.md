@@ -19,14 +19,13 @@ Most importantly, make sure that "C++ CMake tools for Windows" is installed. It 
 
 ![image](https://github.com/lucaxbandini/VisageGuard/assets/152310492/13265b69-06d9-4fcc-8d1a-ab12bda86e7b)
 
-
 **Make sure to fully install Visual Studio Community 2022 before installing Microsoft C++ build tools.**
 
 ## Downloading Microsoft C++ Build Tools
 To download Microsoft C++ Build Tools, follow this [link](https://visualstudio.microsoft.com/visual-cpp-build-tools/).
 
 # Installing Dlib
-Create a new PyCharm project by clicking the Menu button at the top of the PyCharm window, then on "New Project". Leave all setting as default (change name if you'd like).
+Create a new PyCharm project by clicking the Menu button at the top of the PyCharm window, then on "New Project". Leave all settings as default (change name if you'd like).
 
 ![image](https://github.com/lucaxbandini/VisageGuard/assets/152310492/05d64660-4b13-44d0-a6e4-4a0492fdcc3b)
 
@@ -34,7 +33,7 @@ A Microsoft Defender alert will appear at the bottom right corner of the PyCharm
 
 ![image](https://github.com/lucaxbandini/VisageGuard/assets/152310492/c4f1cc2d-d7cc-4b45-afda-788007c2d0e0)
 
-Download the current version of VisageGuard and add it to the PyCharm project. Do this by right-clicking on .venv, hover over "open in" then choose explorer. Click into the .venv folder and place the latest version's file.
+Download the current version of VisageGuard and add it to the PyCharm project. Do this by right-clicking on .venv, hovering over "Open In" and then choosing explorer. Click into the .venv folder and place the latest version's file.
 
 ![image](https://github.com/lucaxbandini/VisageGuard/assets/152310492/1f4f1780-6b3a-4ada-a845-6b97626e2e95)
 
@@ -42,3 +41,22 @@ As you can see, the file will be added to the project.
 
 ![image](https://github.com/lucaxbandini/VisageGuard/assets/152310492/eb0f3895-deb8-422a-b6cc-f3d7b624ad67)
 
+Download [dlib-19.24.1-cp311-cp311-win_amd64.whl](https://github.com/Murtaza-Saeed/dlib/blob/master/dlib-19.24.1-cp311-cp311-win_amd64.whl). Place this in the main project file folder in explorer, outside of .venv.
+
+![image](https://github.com/lucaxbandini/VisageGuard/assets/152310492/37642a24-f81c-4d09-9578-522b3d123224)
+
+Then, open the terminal at the bottom-left of the project window. Paste this "py -m pip install .\dlib-19.24.1-cp311-cp311-win_amd64.whl" into it and run it by pressing enter on your keyboard.
+
+After this, paste "pip install cmake", then "pip install dlib".
+
+![image](https://github.com/lucaxbandini/VisageGuard/assets/152310492/8ecfa357-9da7-4710-9897-a4826bec7c47)
+
+# Completing Setup
+
+In the terminal, install the remaining required packages with "pip install opencv-python" and "pip install face_recognition".
+
+Download [cutout.png](https://github.com/lucaxbandini/VisageGuard/tree/main/Photos/cutout.png) and [shape_predictor_68_face_landmarks.dat](https://github.com/italojs/facial-landmarks-recognition/blob/master/shape_predictor_68_face_landmarks.dat). Just as earlier, place these files inside of the .venv folder.
+
+After this, you can run VisageGuard to try it for yourself by clicking the green run button at the top of the project screen.
+
+![image](https://github.com/lucaxbandini/VisageGuard/assets/152310492/0dc6295b-b6c2-4e25-a88e-d20dcf81176b)
