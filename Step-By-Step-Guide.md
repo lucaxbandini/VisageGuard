@@ -61,7 +61,7 @@ After this, you can run VisageGuard to try it for yourself by clicking the green
 
 ![image](https://github.com/lucaxbandini/VisageGuard/assets/152310492/0dc6295b-b6c2-4e25-a88e-d20dcf81176b)
 
-# Everything Should Look Like This at the End
+# Project Folder Should Look Like This at the End
 
 ![image](https://github.com/lucaxbandini/VisageGuard/assets/152310492/73d8134e-b338-492b-8ac4-9a4f2ef9215d)
 
