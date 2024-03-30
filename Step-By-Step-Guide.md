@@ -9,4 +9,13 @@ To download PyCharm, follow this [link](https://www.jetbrains.com/pycharm/downlo
 ![image](https://github.com/lucaxbandini/VisageGuard/assets/152310492/69e7fed8-e771-465d-9689-6b2007797d95)
 
 # Downloading Visual Studio Community 2022
-To download PyCharm, follow this [link](https://www.python.org/downloads/release/python-3113/](https://www.jetbrains.com/pycharm/)](https://visualstudio.microsoft.com/downloads/?q=build+tools).
+To download Visual Studio Community 2022, follow this [link](https://visualstudio.microsoft.com/downloads/?q=build+tools). Choose the community edition. When selecting packages to download, choose "Python development" and "Desktop development with C++".
+
+Most importantly, make sure that "C++ CMake tools for Windows" is installed. It is located on the right side of the installation screen under "Desktop development with C++".
+![image](https://github.com/lucaxbandini/VisageGuard/assets/152310492/13265b69-06d9-4fcc-8d1a-ab12bda86e7b)
+
+
+*Make sure to fully install Visual Studio Community 2022 before installing Microsoft C++ build tools.**
+
+# Downloading Microsoft C++ Build Tools
+To download Microsoft C++ Build Tools, follow this [link](https://visualstudio.microsoft.com/visual-cpp-build-tools/).
