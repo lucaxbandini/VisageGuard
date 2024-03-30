@@ -30,7 +30,15 @@ Create a new PyCharm project by clicking the Menu button at the top of the PyCha
 
 ![image](https://github.com/lucaxbandini/VisageGuard/assets/152310492/05d64660-4b13-44d0-a6e4-4a0492fdcc3b)
 
-A Microsoft Defender alert will appear: click automatically, then yes.
+A Microsoft Defender alert will appear at the bottom right corner of the PyCharm window: click automatically, then yes.
 
 ![image](https://github.com/lucaxbandini/VisageGuard/assets/152310492/c4f1cc2d-d7cc-4b45-afda-788007c2d0e0)
+
+Download the current version of VisageGuard and add it to the PyCharm project. Do this by right-clicking on .venv, hover over "open in" then choose explorer. Click into the .venv folder and place the latest version's file.
+
+![image](https://github.com/lucaxbandini/VisageGuard/assets/152310492/1f4f1780-6b3a-4ada-a845-6b97626e2e95)
+
+As you can see, the file will be added to the project.
+
+![image](https://github.com/lucaxbandini/VisageGuard/assets/152310492/eb0f3895-deb8-422a-b6cc-f3d7b624ad67)
 
