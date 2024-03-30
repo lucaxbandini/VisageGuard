@@ -4,6 +4,8 @@ VisageGuard is a PC locker that works based on facial recognition.
 
 # Setup
 
+For a complete step-by-step guide, click [here](https://github.com/lucaxbandini/VisageGuard/blob/main/Step-By-Step-Guide.md).
+
 ** Must be on Python 3.11.3, Visual Studio Community 2022, Microsoft C++ Build Tools must be installed **
 
 Download [Python 3.11.3](https://www.python.org/downloads/release/python-3113/).
