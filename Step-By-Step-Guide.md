@@ -41,7 +41,7 @@ As you can see, the file will be added to the project.
 
 ![image](https://github.com/lucaxbandini/VisageGuard/assets/152310492/eb0f3895-deb8-422a-b6cc-f3d7b624ad67)
 
-Download [dlib-19.24.1-cp311-cp311-win_amd64.whl](https://github.com/Murtaza-Saeed/dlib/blob/master/dlib-19.24.1-cp311-cp311-win_amd64.whl). Place this in the main project file folder in explorer, outside of .venv.
+Download [dlib-19.24.1-cp311-cp311-win_amd64.whl](https://github.com/Murtaza-Saeed/dlib/blob/master/dlib-19.24.1-cp311-cp311-win_amd64.whl). When the page opens, click on "View Raw" to download the file. Place this in the main project file folder in explorer, outside of .venv.
 
 ![image](https://github.com/lucaxbandini/VisageGuard/assets/152310492/37642a24-f81c-4d09-9578-522b3d123224)
 
