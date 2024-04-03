@@ -46,7 +46,7 @@ After this, you can run VisageGuard to try it for yourself by clicking the green
 
 - Pressing "Start" before enrolling a user will automatically lock your PC.
 
-- Versions 0.19 and 0.18 are a little weird with detecting known faces. If either gives you problems, use version 0.17 or 0.17.1)
+- Versions 0.18 and 0.19 are a little weird with detecting known faces. If either gives you problems, use version 0.17 or 0.17.1)
   
 - If you use either of the alternative versions listed above, they will appear to lag a little but run as intended. I hadn't optimized the camera feed yet.
 
