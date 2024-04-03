@@ -1,6 +1,6 @@
 # What is VisageGuard?
 
-VisageGuard is a PC locker that works based on facial recognition. 
+VisageGuard is a PC locker that works based on facial recognition. It currently includes a few features, such as user enrollment, facial recognition and detection, basic settings panel, and "dark mode".
 
 # Setup
 
@@ -63,8 +63,6 @@ After this, you can run VisageGuard to try it for yourself by clicking the green
 - Dark mode does not work as intended.
 
 # Features to be Added (Listed by Priority)
-
-- User enrollment; DONE!
   
 - Enhanced performance and error handling
   
