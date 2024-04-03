@@ -56,7 +56,9 @@ After this, you can run VisageGuard to try it for yourself by clicking the green
 
 - Pressing "Start" will not immediately start detection; give it a few seconds and a window will appear.
 
-- Pressing "Stop" while detection is running will cause the program to freeze.
+- Pressing "Enroll User" will not immediately open the input window; give it a few seconds.
+
+- Pressing "Stop" after pressing "Start" will cause the program to freeze.
 
 - In the settings tab, pressing the "Enter" button on your keyboard will not work; click "Save".
 
