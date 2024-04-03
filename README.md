@@ -42,6 +42,14 @@ After this, you can run VisageGuard to try it for yourself by clicking the green
 
 ![image](https://github.com/lucaxbandini/VisageGuard/assets/152310492/73d8134e-b338-492b-8ac4-9a4f2ef9215d)
 
+# Before You Run...
+
+- Pressing "Start" before enrolling a user will automatically lock your PC.
+
+- Versions 0.19 and 0.18 are a little weird with detecting known faces. If either gives you problems, use version 0.17 or 0.17.1)
+  
+- If you use either of the alternative versions listed above, they will appear to lag a little but run as intended. I hadn't optimized the camera feed yet.
+
 # Current Known Issues
 
 - Pressing "Start" will not immediately start detection; give it a few seconds and a window will appear.
@@ -56,7 +64,7 @@ After this, you can run VisageGuard to try it for yourself by clicking the green
 
 # Features to be Added (Listed by Priority)
 
-- User enrollment
+- User enrollment; DONE!
   
 - Enhanced performance and error handling
   
