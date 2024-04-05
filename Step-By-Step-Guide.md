@@ -52,7 +52,7 @@ Download [dlib-19.24.1-cp311-cp311-win_amd64.whl](https://github.com/Murtaza-Sae
 
 ![image](https://github.com/lucaxbandini/VisageGuard/assets/152310492/37642a24-f81c-4d09-9578-522b3d123224)
 
-Then, open the terminal at the bottom-left of the project window. Paste this "py -m pip install .\dlib-19.24.1-cp311-cp311-win_amd64.whl" into it and run it by pressing enter on your keyboard.
+Then, in PyCharm, open the terminal at the bottom-left of the project window. Paste this "py -m pip install .\dlib-19.24.1-cp311-cp311-win_amd64.whl" into it and run it by pressing enter on your keyboard.
 
 After this, paste "pip install cmake", then "pip install dlib".
 
