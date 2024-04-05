@@ -16,7 +16,7 @@ Download [PyCharm](https://www.jetbrains.com/pycharm/download/?section=windows).
 
 Download [Visual Studio Community 2022](https://visualstudio.microsoft.com/downloads/?q=build+tools) (When selecting packages to download, choose "Python development" and "Desktop development with C++". Make sure "C++ Cmake tools for Windows" is selected in the right pane).
 
-** Make sure to fully install Visual Studio Community 2022 before installing Microsoft C++ build tools. **
+** Make sure to fully install Visual Studio Community 2022 before installing Microsoft C++ build tools. This will take some time. **
 
 Download [Microsoft C++ Build Tools](https://visualstudio.microsoft.com/visual-cpp-build-tools/) (make sure to install any workload that explicitly includes C++ programming).
 
