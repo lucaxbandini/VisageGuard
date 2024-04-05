@@ -1,4 +1,4 @@
-**As recommended, this step-by-step guide will allow you to easily test VisageGuard.**
+**As recommended, this step-by-step guide will allow you to easily test VisageGuard. Please make sure to follow each step carefully.**
 
 # Preliminary Set-up
 
