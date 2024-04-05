@@ -10,6 +10,8 @@ To download Python 3.11.3, follow this [link](https://www.python.org/downloads/r
 ## Downloading PyCharm
 To download PyCharm, follow this [link](https://www.jetbrains.com/pycharm/download/?section=windows). Scroll down and install PyCharm Community Edition.
 
+Upon opening PyCharm for the first time, it will ask you if you want to import settings. Choose "Do not import settings".
+
 ![image](https://github.com/lucaxbandini/VisageGuard/assets/152310492/69e7fed8-e771-465d-9689-6b2007797d95)
 
 ## Downloading Visual Studio Community 2022
@@ -30,7 +32,7 @@ Most importantly, select "Desktop development with C++" and make sure that "C++ 
 
 Download [Cmake](https://cmake.org/download/) ( Choose "Windows x64 Installer". During installation, check the box that adds a path for the current user).
 
-Create a new PyCharm project by clicking the Menu button at the top of the PyCharm window, then on "New Project". Leave all settings as default (change name if you'd like).
+Create a new PyCharm project by clicking the Menu button at the top of the PyCharm window, then on "New Project". Leave all settings as default, except for "Python version"; make sure it is set to "Python311".
 
 ![image](https://github.com/lucaxbandini/VisageGuard/assets/152310492/05d64660-4b13-44d0-a6e4-4a0492fdcc3b)
 
