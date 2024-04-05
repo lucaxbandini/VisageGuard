@@ -24,6 +24,8 @@ Most importantly, make sure that "C++ CMake tools for Windows" is installed. It 
 ## Downloading Microsoft C++ Build Tools
 To download Microsoft C++ Build Tools, follow this [link](https://visualstudio.microsoft.com/visual-cpp-build-tools/).
 
+Most importantly, select "Desktop development with C++" and make sure that "C++ CMake tools for Windows" is installed. It is located on the right side of the installation screen under "Desktop development with C++".
+
 # Installing Dlib
 
 Download [Cmake](https://cmake.org/download/) (check the box that adds a path for the current user).
