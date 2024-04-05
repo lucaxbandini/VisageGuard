@@ -8,7 +8,7 @@ It currently includes a few features such as user enrollment, facial recognition
 
 For a complete step-by-step guide, click [here](https://github.com/lucaxbandini/VisageGuard/blob/main/Step-By-Step-Guide.md).
 
-** Must be on Python 3.11.3, Visual Studio Community 2022, Microsoft C++ Build Tools must be installed **
+**Must be on Python 3.11.3, Visual Studio Community 2022, Microsoft C++ Build Tools must be installed**
 
 Download [Python 3.11.3](https://www.python.org/downloads/release/python-3113/).
 
@@ -16,7 +16,7 @@ Download [PyCharm](https://www.jetbrains.com/pycharm/download/?section=windows).
 
 Download [Visual Studio Community 2022](https://visualstudio.microsoft.com/downloads/?q=build+tools) (When selecting packages to download, choose "Python development" and "Desktop development with C++". Make sure "C++ Cmake tools for Windows" is selected in the right pane).
 
-** Make sure to fully install Visual Studio Community 2022 before installing Microsoft C++ build tools. This will take some time. **
+**Make sure to fully install Visual Studio Community 2022 before installing Microsoft C++ build tools. This will take some time.**
 
 Download [Microsoft C++ Build Tools](https://visualstudio.microsoft.com/visual-cpp-build-tools/) (make sure to install any workload that explicitly includes C++ programming).
 
