@@ -19,7 +19,7 @@ Most importantly, make sure that "C++ CMake tools for Windows" is installed. It 
 
 ![image](https://github.com/lucaxbandini/VisageGuard/assets/152310492/13265b69-06d9-4fcc-8d1a-ab12bda86e7b)
 
-**Make sure to fully install Visual Studio Community 2022 before installing Microsoft C++ build tools.**
+**Make sure to fully install Visual Studio Community 2022 before installing Microsoft C++ build tools. This will take some time.**
 
 ## Downloading Microsoft C++ Build Tools
 To download Microsoft C++ Build Tools, follow this [link](https://visualstudio.microsoft.com/visual-cpp-build-tools/).
