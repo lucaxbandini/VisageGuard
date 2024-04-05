@@ -25,6 +25,9 @@ Most importantly, make sure that "C++ CMake tools for Windows" is installed. It 
 To download Microsoft C++ Build Tools, follow this [link](https://visualstudio.microsoft.com/visual-cpp-build-tools/).
 
 # Installing Dlib
+
+Download [Cmake](https://cmake.org/download/) (check the box that adds a path for the current user).
+
 Create a new PyCharm project by clicking the Menu button at the top of the PyCharm window, then on "New Project". Leave all settings as default (change name if you'd like).
 
 ![image](https://github.com/lucaxbandini/VisageGuard/assets/152310492/05d64660-4b13-44d0-a6e4-4a0492fdcc3b)
