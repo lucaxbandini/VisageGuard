@@ -14,7 +14,7 @@ Download [Python 3.11.3](https://www.python.org/downloads/release/python-3113/).
 
 Download [PyCharm](https://www.jetbrains.com/pycharm/download/?section=windows).
 
-Download [Visual Studio Community 2022](https://visualstudio.microsoft.com/downloads/?q=build+tools) (make sure to install "C++ Cmake tools for Windows").
+Download [Visual Studio Community 2022](https://visualstudio.microsoft.com/downloads/?q=build+tools) (When selecting packages to download, choose "Python development" and "Desktop development with C++". Make sure to install "C++ Cmake tools for Windows" in the pane on the right).
 
 ** Make sure to fully install Visual Studio Community 2022 before installing Microsoft C++ build tools. **
 
