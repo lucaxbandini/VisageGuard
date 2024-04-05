@@ -28,7 +28,7 @@ Most importantly, select "Desktop development with C++" and make sure that "C++ 
 
 # Installing Dlib
 
-Download [Cmake](https://cmake.org/download/) (check the box that adds a path for the current user).
+Download [Cmake](https://cmake.org/download/) ( Choose "Windows x64 Installer". During installation, check the box that adds a path for the current user).
 
 Create a new PyCharm project by clicking the Menu button at the top of the PyCharm window, then on "New Project". Leave all settings as default (change name if you'd like).
 
