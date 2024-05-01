@@ -46,7 +46,7 @@ After this, you can run VisageGuard to try it for yourself by clicking the green
 
 # Before You Run...
 
-- You will be locked out of your PC. VisageGuard will stop when this happens so you can get back into your PC. Don't worry about getting locked out.
+- You will be locked out of your PC. VisageGuard will stop when this happens so you can get back into your PC. Don't worry about permanently getting locked out. However, if it does happen, restart your PC.
 
 - On versions past 0.16, pressing "Start" before enrolling a user will automatically lock your PC.
 
