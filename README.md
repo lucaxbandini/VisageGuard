@@ -46,6 +46,8 @@ After this, you can run VisageGuard to try it for yourself by clicking the green
 
 # Before You Run...
 
+- You will be locked out of your PC. VisageGuard will stop when this happens so you can get back into your PC. Don't worry about getting locked out.
+
 - On versions past 0.16, pressing "Start" before enrolling a user will automatically lock your PC.
 
 - Versions 0.18 and 0.19 are a little weird with detecting known faces. If either gives you problems, use version 0.17 or 0.17.1
