@@ -9,6 +9,7 @@ from pathlib import Path
 from PIL import Image, ImageTk
 import face_recognition
 
+
 class BlinkDetectionApp:
     def __init__(self, root):
         self.root = root
