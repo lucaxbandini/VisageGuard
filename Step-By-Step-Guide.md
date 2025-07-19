@@ -60,7 +60,7 @@ After this, paste "pip install cmake", then "pip install dlib".
 
 # Completing Setup
 
-In the terminal, install the remaining required packages with "pip install opencv-python" and "pip install face_recognition".
+In the terminal, install the remaining required packages with "pip install opencv-python, face_recognition, cryptography, fernet".
 
 Download [cutout.png](https://github.com/lucaxbandini/VisageGuard/tree/main/Photos/cutout.png) and [shape_predictor_68_face_landmarks.dat](https://github.com/italojs/facial-landmarks-recognition/blob/master/shape_predictor_68_face_landmarks.dat). Just as earlier, place these files inside of the .venv folder.
 
