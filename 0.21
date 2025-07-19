@@ -1,0 +1,964 @@
+import cv2
+import dlib
+import ctypes
+import time
+import threading
+import tkinter as tk
+from tkinter import ttk, messagebox, simpledialog, filedialog
+from pathlib import Path
+import json
+import hashlib
+import logging
+import numpy as np
+from PIL import Image, ImageTk
+import face_recognition
+from cryptography.fernet import Fernet
+from datetime import datetime, timedelta
+
+
+class ConfigManager:
+    """Handles configuration loading and saving"""
+
+    def __init__(self, config_file="config.json"):
+        self.config_file = config_file
+        self.default_config = {
+            "ear_threshold": 0.25,
+            "max_blink_duration": 5,
+            "max_face_detection_duration": 10,
+            "max_no_blink_duration": 15,
+            "confidence_threshold": 0.6,
+            "frame_skip": 3,
+            "face_recognition_interval": 30,
+            "auto_lock_enabled": True,
+            "logging_enabled": True,
+            "dark_mode": False,
+            "autostart": False
+        }
+
+    def load_config(self):
+        """Load configuration from file or return defaults"""
+        try:
+            if Path(self.config_file).exists():
+                with open(self.config_file, 'r') as f:
+                    config = json.load(f)
+                    # Merge with defaults to handle missing keys
+                    return {**self.default_config, **config}
+        except Exception as e:
+            logging.warning(f"Failed to load config: {e}")
+        return self.default_config.copy()
+
+    def save_config(self, config):
+        """Save configuration to file"""
+        try:
+            with open(self.config_file, 'w') as f:
+                json.dump(config, f, indent=4)
+            return True
+        except Exception as e:
+            logging.error(f"Failed to save config: {e}")
+            return False
+
+
+class SecurityManager:
+    """Handles encryption and secure storage of user data"""
+
+    def __init__(self, key_file="security.key"):
+        self.key_file = key_file
+        self.cipher = self._load_or_create_key()
+
+    def _load_or_create_key(self):
+        """Load existing key or create new one"""
+        if Path(self.key_file).exists():
+            with open(self.key_file, 'rb') as f:
+                key = f.read()
+        else:
+            key = Fernet.generate_key()
+            with open(self.key_file, 'wb') as f:
+                f.write(key)
+        return Fernet(key)
+
+    def encrypt_data(self, data):
+        """Encrypt data using Fernet encryption"""
+        return self.cipher.encrypt(json.dumps(data).encode())
+
+    def decrypt_data(self, encrypted_data):
+        """Decrypt data using Fernet encryption"""
+        try:
+            decrypted = self.cipher.decrypt(encrypted_data)
+            return json.loads(decrypted.decode())
+        except Exception:
+            return None
+
+
+class UserManager:
+    """Manages user enrollment and authentication"""
+
+    def __init__(self, security_manager, users_file="users.enc"):
+        self.security_manager = security_manager
+        self.users_file = users_file
+        self.enrolled_users = self._load_users()
+        self.failed_attempts = {}
+        self.lockout_duration = 300  # 5 minutes
+
+    def _load_users(self):
+        """Load encrypted user data"""
+        try:
+            if Path(self.users_file).exists():
+                with open(self.users_file, 'rb') as f:
+                    encrypted_data = f.read()
+                users = self.security_manager.decrypt_data(encrypted_data)
+                if users:
+                    # Convert list encodings back to numpy arrays
+                    for name, encodings in users.items():
+                        users[name] = [np.array(enc) for enc in encodings]
+                    return users
+        except Exception as e:
+            logging.error(f"Failed to load users: {e}")
+        return {}
+
+    def save_users(self):
+        """Save encrypted user data"""
+        try:
+            # Convert numpy arrays to lists for JSON serialization
+            users_to_save = {}
+            for name, encodings in self.enrolled_users.items():
+                users_to_save[name] = [enc.tolist() for enc in encodings]
+
+            encrypted_data = self.security_manager.encrypt_data(users_to_save)
+            with open(self.users_file, 'wb') as f:
+                f.write(encrypted_data)
+            return True
+        except Exception as e:
+            logging.error(f"Failed to save users: {e}")
+            return False
+
+    def is_locked_out(self, user_id="default"):
+        """Check if user is locked out due to failed attempts"""
+        if user_id in self.failed_attempts:
+            attempts, last_attempt = self.failed_attempts[user_id]
+            if attempts >= 3 and (datetime.now() - last_attempt) < timedelta(seconds=self.lockout_duration):
+                return True
+        return False
+
+    def record_failed_attempt(self, user_id="default"):
+        """Record a failed authentication attempt"""
+        if user_id in self.failed_attempts:
+            attempts, _ = self.failed_attempts[user_id]
+            self.failed_attempts[user_id] = (attempts + 1, datetime.now())
+        else:
+            self.failed_attempts[user_id] = (1, datetime.now())
+
+    def clear_failed_attempts(self, user_id="default"):
+        """Clear failed attempts for successful authentication"""
+        if user_id in self.failed_attempts:
+            del self.failed_attempts[user_id]
+
+    def enroll_user(self, name, face_encodings):
+        """Enroll a new user with face encodings"""
+        if name and face_encodings:
+            self.enrolled_users[name] = face_encodings
+            return self.save_users()
+        return False
+
+    def authenticate_user(self, face_encoding, tolerance=0.6):
+        """Authenticate user based on face encoding"""
+        if self.is_locked_out():
+            return None, False
+
+        for name, encodings in self.enrolled_users.items():
+            matches = face_recognition.compare_faces(encodings, face_encoding, tolerance=tolerance)
+            if any(matches):
+                self.clear_failed_attempts()
+                logging.info(f"User {name} authenticated successfully")
+                return name, True
+
+        self.record_failed_attempt()
+        logging.warning("Authentication failed - unknown user")
+        return None, False
+
+
+class BlinkDetectionApp:
+    def __init__(self, root):
+        self.root = root
+        self.root.title("VisageGuard Pro – Advanced Facial Recognition Security")
+        self.root.geometry("1000x800")
+        self.root.minsize(800, 600)
+
+        # Initialize managers
+        self.config_manager = ConfigManager()
+        self.config = self.config_manager.load_config()
+        self.security_manager = SecurityManager()
+        self.user_manager = UserManager(self.security_manager)
+
+        # Setup logging
+        self.setup_logging()
+
+        # Initialize variables
+        self.cap = None
+        self.detection_thread = None
+        self.stop_event = threading.Event()
+        self.face_detected = False
+        self.last_face_check = time.time()
+        self.is_running = False
+
+        # Load face detection models
+        self.detector = dlib.get_frontal_face_detector()
+        self.predictor = self.load_predictor()
+
+        # UI variables
+        self.detection_var = tk.IntVar(value=1)
+        self.auto_lock_var = tk.IntVar(value=self.config.get("auto_lock_enabled", 1))
+        self.dark_mode_var = tk.IntVar(value=self.config.get("dark_mode", 0))
+        self.autostart_var = tk.IntVar(value=self.config.get("autostart", 0))
+
+        # Create UI
+        self.create_ui()
+        self.update_theme()
+
+        # Auto-start if enabled
+        if self.config.get("autostart", False):
+            self.root.after(1000, self.start_detection)
+
+    def setup_logging(self):
+        """Setup logging configuration"""
+        if self.config.get("logging_enabled", True):
+            logging.basicConfig(
+                level=logging.INFO,
+                format='%(asctime)s - %(levelname)s - %(message)s',
+                handlers=[
+                    logging.FileHandler('visageguard.log'),
+                    logging.StreamHandler()
+                ]
+            )
+        else:
+            logging.disable(logging.CRITICAL)
+
+    def load_predictor(self):
+        """Load dlib facial landmark predictor"""
+        predictor_path = Path(__file__).parent / "shape_predictor_68_face_landmarks.dat"
+        if not predictor_path.exists():
+            messagebox.showerror("Error",
+                                 "The dlib facial landmark predictor file was not found.\n"
+                                 "Please download it from: http://dlib.net/files/shape_predictor_68_face_landmarks.dat.bz2")
+            return None
+        return dlib.shape_predictor(str(predictor_path))
+
+    def create_ui(self):
+        """Create the user interface"""
+        # Main container
+        self.main_container = ttk.PanedWindow(self.root, orient=tk.HORIZONTAL)
+        self.main_container.pack(fill=tk.BOTH, expand=True, padx=10, pady=10)
+
+        # Left panel for video
+        self.video_frame = ttk.Frame(self.main_container)
+        self.main_container.add(self.video_frame, weight=3)
+
+        # Video canvas with scrollbars
+        self.canvas = tk.Canvas(self.video_frame, width=640, height=480, bg='black')
+        self.canvas.pack(fill=tk.BOTH, expand=True)
+
+        # Status label
+        self.status_label = ttk.Label(self.video_frame, text="Ready", font=('Arial', 12, 'bold'))
+        self.status_label.pack(pady=5)
+
+        # Right panel for controls
+        self.control_frame = ttk.Frame(self.main_container)
+        self.main_container.add(self.control_frame, weight=1)
+
+        # Create control sections
+        self.create_control_sections()
+
+    def create_control_sections(self):
+        """Create organized control sections"""
+        # System Controls
+        system_frame = ttk.LabelFrame(self.control_frame, text="System Controls", padding=10)
+        system_frame.pack(fill=tk.X, pady=5)
+
+        self.start_button = ttk.Button(system_frame, text="Start Protection",
+                                       command=self.start_detection, style="Accent.TButton")
+        self.start_button.pack(fill=tk.X, pady=2)
+
+        self.stop_button = ttk.Button(system_frame, text="Stop Protection",
+                                      command=self.stop_detection, state=tk.DISABLED)
+        self.stop_button.pack(fill=tk.X, pady=2)
+
+        # Detection Settings
+        detection_frame = ttk.LabelFrame(self.control_frame, text="Detection Settings", padding=10)
+        detection_frame.pack(fill=tk.X, pady=5)
+
+        ttk.Checkbutton(detection_frame, text="Enable Face Detection",
+                        variable=self.detection_var).pack(anchor=tk.W, pady=2)
+        ttk.Checkbutton(detection_frame, text="Auto-lock PC",
+                        variable=self.auto_lock_var).pack(anchor=tk.W, pady=2)
+        ttk.Checkbutton(detection_frame, text="Start on Boot",
+                        variable=self.autostart_var).pack(anchor=tk.W, pady=2)
+
+        # User Management
+        user_frame = ttk.LabelFrame(self.control_frame, text="User Management", padding=10)
+        user_frame.pack(fill=tk.X, pady=5)
+
+        ttk.Button(user_frame, text="Enroll New User",
+                   command=self.enroll_user).pack(fill=tk.X, pady=2)
+        ttk.Button(user_frame, text="Manage Users",
+                   command=self.manage_users).pack(fill=tk.X, pady=2)
+        ttk.Button(user_frame, text="Export/Import Users",
+                   command=self.export_import_users).pack(fill=tk.X, pady=2)
+
+        # Advanced Settings
+        advanced_frame = ttk.LabelFrame(self.control_frame, text="Advanced", padding=10)
+        advanced_frame.pack(fill=tk.X, pady=5)
+
+        ttk.Button(advanced_frame, text="Detection Settings",
+                   command=self.show_advanced_settings).pack(fill=tk.X, pady=2)
+        ttk.Button(advanced_frame, text="Security Logs",
+                   command=self.show_logs).pack(fill=tk.X, pady=2)
+        ttk.Checkbutton(advanced_frame, text="Dark Mode",
+                        variable=self.dark_mode_var,
+                        command=self.toggle_theme).pack(anchor=tk.W, pady=2)
+
+        # Status Information
+        status_frame = ttk.LabelFrame(self.control_frame, text="Status", padding=10)
+        status_frame.pack(fill=tk.X, pady=5)
+
+        self.users_count_label = ttk.Label(status_frame,
+                                           text=f"Enrolled Users: {len(self.user_manager.enrolled_users)}")
+        self.users_count_label.pack(anchor=tk.W)
+
+        self.last_check_label = ttk.Label(status_frame, text="Last Check: Never")
+        self.last_check_label.pack(anchor=tk.W)
+
+    def update_theme(self):
+        """Update UI theme based on dark mode setting"""
+        style = ttk.Style()
+        if self.dark_mode_var.get():
+            style.theme_use('clam')
+            # Additional dark theme customizations could go here
+        else:
+            style.theme_use('default')
+
+    def toggle_theme(self):
+        """Toggle between light and dark themes"""
+        self.update_theme()
+        self.config["dark_mode"] = self.dark_mode_var.get()
+        self.save_config()
+
+    def save_config(self):
+        """Save current configuration"""
+        self.config.update({
+            "auto_lock_enabled": self.auto_lock_var.get(),
+            "dark_mode": self.dark_mode_var.get(),
+            "autostart": self.autostart_var.get()
+        })
+        self.config_manager.save_config(self.config)
+
+    def start_detection(self):
+        """Start the facial recognition detection"""
+        if self.is_running:
+            return
+
+        if not self.detection_var.get():
+            messagebox.showwarning("Warning", "Face detection is disabled. Enable it in settings.")
+            return
+
+        if not self.user_manager.enrolled_users:
+            messagebox.showwarning("Warning", "No users enrolled. Please enroll at least one user first.")
+            return
+
+        self.cap = cv2.VideoCapture(0)
+        if not self.cap.isOpened():
+            messagebox.showerror("Error", "Failed to access camera. Please check your camera connection.")
+            return
+
+        # Optimize camera settings
+        self.cap.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
+        self.cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
+        self.cap.set(cv2.CAP_PROP_FPS, 30)
+
+        self.is_running = True
+        self.stop_event.clear()
+        self.detection_thread = threading.Thread(target=self.detection_loop, daemon=True)
+        self.detection_thread.start()
+
+        self.start_button.config(state=tk.DISABLED)
+        self.stop_button.config(state=tk.NORMAL)
+        self.update_status("Protection Active")
+
+        logging.info("Face detection started")
+
+    def stop_detection(self):
+        """Stop the facial recognition detection"""
+        if not self.is_running:
+            return
+
+        self.is_running = False
+        self.stop_event.set()
+
+        if self.detection_thread and self.detection_thread.is_alive():
+            self.detection_thread.join(timeout=2.0)
+
+        if self.cap:
+            self.cap.release()
+            self.cap = None
+
+        cv2.destroyAllWindows()
+
+        self.start_button.config(state=tk.NORMAL)
+        self.stop_button.config(state=tk.DISABLED)
+        self.update_status("Protection Stopped")
+
+        # Clear video display
+        self.canvas.delete("all")
+
+        logging.info("Face detection stopped")
+
+    def detection_loop(self):
+        """Main detection loop running in separate thread"""
+        frame_count = 0
+        last_blink_time = time.time()
+        last_face_time = time.time()
+        last_recognition_check = time.time()
+        blink_counter = 0
+
+        while self.is_running and not self.stop_event.is_set():
+            try:
+                ret, frame = self.cap.read()
+                if not ret:
+                    time.sleep(0.1)
+                    continue
+
+                frame_count += 1
+                current_time = time.time()
+
+                # Process frame at intervals to improve performance
+                if frame_count % self.config.get("frame_skip", 3) == 0:
+                    # Resize frame for faster processing
+                    small_frame = cv2.resize(frame, (320, 240))
+                    gray = cv2.cvtColor(small_frame, cv2.COLOR_BGR2GRAY)
+
+                    # Detect faces
+                    faces = self.detector(gray)
+                    face_detected_this_frame = len(faces) > 0
+
+                    if face_detected_this_frame:
+                        self.face_detected = True
+                        last_face_time = current_time
+
+                        # Perform face recognition periodically
+                        if (current_time - last_recognition_check >
+                                self.config.get("face_recognition_interval", 30)):
+
+                            if self.perform_face_recognition(small_frame):
+                                last_recognition_check = current_time
+                            else:
+                                if self.auto_lock_var.get():
+                                    self.trigger_lock("Unauthorized user detected")
+                                    break
+
+                        # Blink detection
+                        if self.predictor:
+                            for face in faces:
+                                # Scale face coordinates back to small frame
+                                shape = self.predictor(gray, face)
+                                if self.is_blinking(shape):
+                                    blink_counter += 1
+                                    last_blink_time = current_time
+                                else:
+                                    blink_counter = 0
+
+                        # Check for extended blink (possible unconsciousness)
+                        if (blink_counter > 10 and
+                                current_time - last_blink_time > self.config.get("max_blink_duration", 5)):
+                            if self.auto_lock_var.get():
+                                self.trigger_lock("Extended blink detected - possible unconsciousness")
+                                break
+
+                    else:
+                        # No face detected
+                        self.face_detected = False
+                        blink_counter = 0
+
+                        # Check if no face for too long
+                        if (current_time - last_face_time >
+                                self.config.get("max_face_detection_duration", 10)):
+                            if self.auto_lock_var.get():
+                                self.trigger_lock("No authorized user detected")
+                                break
+
+                # Update GUI with current frame
+                self.update_video_display(frame)
+                self.update_status_info(current_time)
+
+                time.sleep(0.033)  # ~30 FPS
+
+            except Exception as e:
+                logging.error(f"Error in detection loop: {e}")
+                break
+
+        self.stop_detection()
+
+    def perform_face_recognition(self, frame):
+        """Perform face recognition on the current frame"""
+        try:
+            rgb_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+            face_locations = face_recognition.face_locations(rgb_frame, model="hog")
+
+            if face_locations:
+                face_encodings = face_recognition.face_encodings(rgb_frame, face_locations)
+
+                for encoding in face_encodings:
+                    name, authenticated = self.user_manager.authenticate_user(
+                        encoding, self.config.get("confidence_threshold", 0.6))
+
+                    if authenticated:
+                        logging.info(f"User {name} recognized and authenticated")
+                        return True
+
+            return False
+
+        except Exception as e:
+            logging.error(f"Error in face recognition: {e}")
+            return False
+
+    def is_blinking(self, shape):
+        """Detect if eyes are blinking using eye aspect ratio"""
+        # Extract eye landmarks
+        left_eye = [(shape.part(i).x, shape.part(i).y) for i in range(36, 42)]
+        right_eye = [(shape.part(i).x, shape.part(i).y) for i in range(42, 48)]
+
+        # Calculate eye aspect ratios
+        left_ear = self.eye_aspect_ratio(left_eye)
+        right_ear = self.eye_aspect_ratio(right_eye)
+
+        ear = (left_ear + right_ear) / 2.0
+        return ear < self.config.get("ear_threshold", 0.25)
+
+    def eye_aspect_ratio(self, eye):
+        """Calculate eye aspect ratio"""
+        # Vertical distances
+        a = ((eye[1][0] - eye[5][0]) ** 2 + (eye[1][1] - eye[5][1]) ** 2) ** 0.5
+        b = ((eye[2][0] - eye[4][0]) ** 2 + (eye[2][1] - eye[4][1]) ** 2) ** 0.5
+
+        # Horizontal distance
+        c = ((eye[0][0] - eye[3][0]) ** 2 + (eye[0][1] - eye[3][1]) ** 2) ** 0.5
+
+        return (a + b) / (2.0 * c)
+
+    def trigger_lock(self, reason):
+        """Trigger PC lock with specified reason"""
+        logging.warning(f"PC locked: {reason}")
+
+        try:
+            # Lock the workstation
+            ctypes.windll.user32.LockWorkStation()
+
+            # Show notification
+            self.root.after(0, lambda: messagebox.showwarning("Security Alert",
+                                                              f"PC locked due to: {reason}\n\nTime: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}"))
+
+        except Exception as e:
+            logging.error(f"Failed to lock PC: {e}")
+            self.root.after(0, lambda: messagebox.showerror("Error",
+                                                            "Failed to lock PC. Please check system permissions."))
+
+    def update_video_display(self, frame):
+        """Update the video display in the GUI"""
+        try:
+            # Convert frame to RGB and resize for display
+            rgb_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+            pil_image = Image.fromarray(rgb_frame)
+
+            # Resize to fit canvas while maintaining aspect ratio
+            canvas_width = self.canvas.winfo_width()
+            canvas_height = self.canvas.winfo_height()
+
+            if canvas_width > 1 and canvas_height > 1:
+                pil_image.thumbnail((canvas_width, canvas_height), Image.Resampling.LANCZOS)
+
+            photo = ImageTk.PhotoImage(pil_image)
+
+            # Update canvas
+            self.canvas.delete("all")
+            self.canvas.create_image(canvas_width // 2, canvas_height // 2, image=photo)
+            self.canvas.image = photo  # Keep a reference
+
+        except Exception as e:
+            logging.error(f"Error updating video display: {e}")
+
+    def update_status_info(self, current_time):
+        """Update status information"""
+        self.last_face_check = current_time
+        status = "Face Detected" if self.face_detected else "No Face"
+        self.root.after(0, lambda: self.update_status(f"Active - {status}"))
+        self.root.after(0, lambda: self.last_check_label.config(
+            text=f"Last Check: {datetime.now().strftime('%H:%M:%S')}"))
+
+    def update_status(self, status):
+        """Update status label"""
+        self.status_label.config(text=status)
+
+    def enroll_user(self):
+        """Enroll a new user"""
+        if self.is_running:
+            messagebox.showwarning("Warning", "Please stop detection before enrolling users.")
+            return
+
+        name = simpledialog.askstring("Enroll User", "Enter user name:")
+        if not name:
+            return
+
+        if name in self.user_manager.enrolled_users:
+            if not messagebox.askyesno("User Exists", f"User '{name}' already exists. Replace?"):
+                return
+
+        # Temporary camera for enrollment
+        cap = cv2.VideoCapture(0)
+        if not cap.isOpened():
+            messagebox.showerror("Error", "Cannot access camera for enrollment.")
+            return
+
+        enrollment_window = tk.Toplevel(self.root)
+        enrollment_window.title(f"Enrolling {name}")
+        enrollment_window.geometry("680x520")
+        enrollment_window.resizable(False, False)
+
+        canvas = tk.Canvas(enrollment_window, width=640, height=480)
+        canvas.pack(pady=10)
+
+        instruction_label = ttk.Label(enrollment_window,
+                                      text="Look directly at the camera. Move your head slightly for better recognition.")
+        instruction_label.pack()
+
+        progress = ttk.Progressbar(enrollment_window, length=400, mode='determinate')
+        progress.pack(pady=10)
+
+        face_encodings = []
+        frame_count = 0
+        target_samples = 10
+
+        def capture_samples():
+            nonlocal frame_count, face_encodings
+
+            ret, frame = cap.read()
+            if not ret:
+                enrollment_window.after(33, capture_samples)
+                return
+
+            frame_count += 1
+
+            # Process every 10th frame
+            if frame_count % 10 == 0 and len(face_encodings) < target_samples:
+                small_frame = cv2.resize(frame, (320, 240))
+                rgb_frame = cv2.cvtColor(small_frame, cv2.COLOR_BGR2RGB)
+
+                face_locations = face_recognition.face_locations(rgb_frame)
+                if face_locations:
+                    encodings = face_recognition.face_encodings(rgb_frame, face_locations)
+                    if encodings:
+                        face_encodings.append(encodings[0])
+                        progress['value'] = (len(face_encodings) / target_samples) * 100
+
+            # Update display
+            rgb_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+            pil_image = Image.fromarray(rgb_frame)
+            photo = ImageTk.PhotoImage(pil_image)
+
+            canvas.delete("all")
+            canvas.create_image(320, 240, image=photo)
+            canvas.image = photo
+
+            if len(face_encodings) >= target_samples:
+                cap.release()
+                enrollment_window.destroy()
+
+                if self.user_manager.enroll_user(name, face_encodings):
+                    self.users_count_label.config(text=f"Enrolled Users: {len(self.user_manager.enrolled_users)}")
+                    messagebox.showinfo("Success", f"User '{name}' enrolled successfully!")
+                else:
+                    messagebox.showerror("Error", "Failed to save user data.")
+            else:
+                enrollment_window.after(33, capture_samples)
+
+        def on_close():
+            cap.release()
+            enrollment_window.destroy()
+
+        enrollment_window.protocol("WM_DELETE_WINDOW", on_close)
+        enrollment_window.after(100, capture_samples)
+
+    def manage_users(self):
+        """Open user management window"""
+        user_window = tk.Toplevel(self.root)
+        user_window.title("User Management")
+        user_window.geometry("400x300")
+
+        # User list
+        listbox = tk.Listbox(user_window)
+        listbox.pack(fill=tk.BOTH, expand=True, padx=10, pady=10)
+
+        # Populate list
+        for name in self.user_manager.enrolled_users.keys():
+            listbox.insert(tk.END, name)
+
+        # Buttons
+        button_frame = ttk.Frame(user_window)
+        button_frame.pack(fill=tk.X, padx=10, pady=5)
+
+        def delete_user():
+            selection = listbox.curselection()
+            if selection:
+                name = listbox.get(selection[0])
+                if messagebox.askyesno("Confirm Delete", f"Delete user '{name}'?"):
+                    del self.user_manager.enrolled_users[name]
+                    self.user_manager.save_users()
+                    listbox.delete(selection[0])
+                    self.users_count_label.config(text=f"Enrolled Users: {len(self.user_manager.enrolled_users)}")
+
+        ttk.Button(button_frame, text="Delete Selected", command=delete_user).pack(side=tk.LEFT, padx=5)
+        ttk.Button(button_frame, text="Close", command=user_window.destroy).pack(side=tk.RIGHT, padx=5)
+
+    def export_import_users(self):
+        """Export or import user data"""
+        choice = messagebox.askyesnocancel("Export/Import",
+                                           "Yes = Export users\nNo = Import users\nCancel = Close")
+
+        if choice is True:  # Export
+            filename = filedialog.asksaveasfilename(
+                defaultextension=".json",
+                filetypes=[("JSON files", "*.json"), ("All files", "*.*")]
+            )
+            if filename:
+                try:
+                    # Export users (without sensitive data)
+                    export_data = {
+                        "users": list(self.user_manager.enrolled_users.keys()),
+                        "export_date": datetime.now().isoformat(),
+                        "version": "2.0"
+                    }
+                    with open(filename, 'w') as f:
+                        json.dump(export_data, f, indent=4)
+                    messagebox.showinfo("Success", f"User list exported to {filename}")
+                except Exception as e:
+                    messagebox.showerror("Error", f"Failed to export: {e}")
+
+        elif choice is False:  # Import
+            filename = filedialog.askopenfilename(
+                filetypes=[("Encrypted files", "*.enc"), ("All files", "*.*")]
+            )
+            if filename:
+                if messagebox.askyesno("Warning",
+                                       "Importing will replace all current users. Continue?"):
+                    try:
+                        # This would require the same encryption key
+                        messagebox.showinfo("Info",
+                                            "Import feature requires matching encryption keys.")
+                    except Exception as e:
+                        messagebox.showerror("Error", f"Failed to import: {e}")
+
+    def show_advanced_settings(self):
+        """Show advanced detection settings"""
+        settings_window = tk.Toplevel(self.root)
+        settings_window.title("Advanced Detection Settings")
+        settings_window.geometry("500x600")
+        settings_window.resizable(False, False)
+
+        # Create scrollable frame
+        canvas = tk.Canvas(settings_window)
+        scrollbar = ttk.Scrollbar(settings_window, orient="vertical", command=canvas.yview)
+        scrollable_frame = ttk.Frame(canvas)
+
+        scrollable_frame.bind(
+            "<Configure>",
+            lambda e: canvas.configure(scrollregion=canvas.bbox("all"))
+        )
+
+        canvas.create_window((0, 0), window=scrollable_frame, anchor="nw")
+        canvas.configure(yscrollcommand=scrollbar.set)
+
+        # Settings entries
+        settings_vars = {}
+
+        settings_config = [
+            ("EAR Threshold", "ear_threshold", "Eye aspect ratio threshold for blink detection"),
+            ("Max Blink Duration (s)", "max_blink_duration", "Maximum time eyes can be closed"),
+            ("Max Face Detection Duration (s)", "max_face_detection_duration", "Time before lock if no face detected"),
+            ("Max No Blink Duration (s)", "max_no_blink_duration", "Maximum time without blinking"),
+            ("Confidence Threshold", "confidence_threshold", "Face recognition confidence threshold"),
+            ("Frame Skip", "frame_skip", "Process every Nth frame for performance"),
+            ("Face Recognition Interval (s)", "face_recognition_interval", "How often to verify face identity"),
+        ]
+
+        for i, (label, key, tooltip) in enumerate(settings_config):
+            frame = ttk.Frame(scrollable_frame)
+            frame.pack(fill=tk.X, padx=10, pady=5)
+
+            ttk.Label(frame, text=label + ":").pack(anchor=tk.W)
+
+            var = tk.StringVar(value=str(self.config.get(key, "")))
+            entry = ttk.Entry(frame, textvariable=var)
+            entry.pack(fill=tk.X, pady=(0, 2))
+            settings_vars[key] = var
+
+            # Tooltip
+            ttk.Label(frame, text=tooltip, font=('Arial', 8),
+                      foreground='gray').pack(anchor=tk.W)
+            ttk.Separator(scrollable_frame, orient=tk.HORIZONTAL).pack(fill=tk.X, padx=10, pady=2)
+
+        def save_settings():
+            try:
+                for key, var in settings_vars.items():
+                    value = var.get()
+                    if key in ["frame_skip", "max_blink_duration", "max_face_detection_duration",
+                               "max_no_blink_duration", "face_recognition_interval"]:
+                        self.config[key] = int(value)
+                    else:
+                        self.config[key] = float(value)
+
+                if self.config_manager.save_config(self.config):
+                    messagebox.showinfo("Success", "Settings saved successfully!")
+                    settings_window.destroy()
+                else:
+                    messagebox.showerror("Error", "Failed to save settings.")
+            except ValueError as e:
+                messagebox.showerror("Error", f"Invalid input values: {e}")
+
+        def reset_defaults():
+            defaults = ConfigManager().default_config
+            for key, var in settings_vars.items():
+                var.set(str(defaults.get(key, "")))
+
+        # Buttons
+        button_frame = ttk.Frame(scrollable_frame)
+        button_frame.pack(fill=tk.X, padx=10, pady=10)
+
+        ttk.Button(button_frame, text="Save", command=save_settings).pack(side=tk.LEFT, padx=5)
+        ttk.Button(button_frame, text="Reset to Defaults", command=reset_defaults).pack(side=tk.LEFT, padx=5)
+        ttk.Button(button_frame, text="Cancel", command=settings_window.destroy).pack(side=tk.RIGHT, padx=5)
+
+        canvas.pack(side="left", fill="both", expand=True)
+        scrollbar.pack(side="right", fill="y")
+
+        # Bind mousewheel to canvas
+        def on_mousewheel(event):
+            canvas.yview_scroll(int(-1 * (event.delta / 120)), "units")
+
+        canvas.bind("<MouseWheel>", on_mousewheel)
+
+    def show_logs(self):
+        """Show security logs"""
+        log_window = tk.Toplevel(self.root)
+        log_window.title("Security Logs")
+        log_window.geometry("800x600")
+
+        # Text widget with scrollbar
+        text_frame = ttk.Frame(log_window)
+        text_frame.pack(fill=tk.BOTH, expand=True, padx=10, pady=10)
+
+        text_widget = tk.Text(text_frame, wrap=tk.WORD, font=('Courier', 10))
+        scrollbar = ttk.Scrollbar(text_frame, orient="vertical", command=text_widget.yview)
+        text_widget.configure(yscrollcommand=scrollbar.set)
+
+        # Load and display log file
+        try:
+            log_file = Path("visageguard.log")
+            if log_file.exists():
+                with open(log_file, 'r') as f:
+                    content = f.read()
+                    # Show only last 1000 lines
+                    lines = content.split('\n')
+                    if len(lines) > 1000:
+                        lines = lines[-1000:]
+                        content = '\n'.join(lines)
+                    text_widget.insert(tk.END, content)
+            else:
+                text_widget.insert(tk.END, "No log file found.")
+        except Exception as e:
+            text_widget.insert(tk.END, f"Error reading log file: {e}")
+
+        text_widget.config(state=tk.DISABLED)  # Make read-only
+
+        text_widget.pack(side="left", fill="both", expand=True)
+        scrollbar.pack(side="right", fill="y")
+
+        # Buttons
+        button_frame = ttk.Frame(log_window)
+        button_frame.pack(fill=tk.X, padx=10, pady=5)
+
+        def refresh_logs():
+            text_widget.config(state=tk.NORMAL)
+            text_widget.delete(1.0, tk.END)
+            try:
+                log_file = Path("visageguard.log")
+                if log_file.exists():
+                    with open(log_file, 'r') as f:
+                        content = f.read()
+                        lines = content.split('\n')
+                        if len(lines) > 1000:
+                            lines = lines[-1000:]
+                            content = '\n'.join(lines)
+                        text_widget.insert(tk.END, content)
+                    text_widget.see(tk.END)  # Scroll to bottom
+            except Exception as e:
+                text_widget.insert(tk.END, f"Error reading log file: {e}")
+            text_widget.config(state=tk.DISABLED)
+
+        def clear_logs():
+            if messagebox.askyesno("Confirm", "Clear all logs? This cannot be undone."):
+                try:
+                    with open("visageguard.log", 'w') as f:
+                        f.write("")
+                    refresh_logs()
+                    messagebox.showinfo("Success", "Logs cleared.")
+                except Exception as e:
+                    messagebox.showerror("Error", f"Failed to clear logs: {e}")
+
+        ttk.Button(button_frame, text="Refresh", command=refresh_logs).pack(side=tk.LEFT, padx=5)
+        ttk.Button(button_frame, text="Clear Logs", command=clear_logs).pack(side=tk.LEFT, padx=5)
+        ttk.Button(button_frame, text="Close", command=log_window.destroy).pack(side=tk.RIGHT, padx=5)
+
+    def on_closing(self):
+        """Handle application closing"""
+        if self.is_running:
+            if messagebox.askyesno("Confirm Exit", "Detection is active. Stop and exit?"):
+                self.stop_detection()
+                self.save_config()
+                self.root.destroy()
+        else:
+            self.save_config()
+            self.root.destroy()
+
+
+def main():
+    """Main application entry point"""
+    try:
+        root = tk.Tk()
+
+        # Set application icon
+        try:
+            icon_path = Path(__file__).parent / "icon.ico"
+            if icon_path.exists():
+                root.iconbitmap(icon_path)
+        except:
+            pass  # Icon not critical
+
+        app = BlinkDetectionApp(root)
+
+        # Handle window closing
+        root.protocol("WM_DELETE_WINDOW", app.on_closing)
+
+        # Center window on screen
+        root.update_idletasks()
+        width = root.winfo_width()
+        height = root.winfo_height()
+        x = (root.winfo_screenwidth() // 2) - (width // 2)
+        y = (root.winfo_screenheight() // 2) - (height // 2)
+        root.geometry(f"{width}x{height}+{x}+{y}")
+
+        root.mainloop()
+
+    except Exception as e:
+        logging.critical(f"Fatal error: {e}")
+        messagebox.showerror("Fatal Error",
+                             f"An unexpected error occurred:\n{e}\n\nPlease check the logs for more details.")
+
+
+if __name__ == "__main__":
+    main()
