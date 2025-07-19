@@ -34,7 +34,7 @@ View this [article](https://medium.com/analytics-vidhya/how-to-install-dlib-libr
 
 ## Setting up the PyCharm project
 
-In the PyCharm project terminal, install the remaining required packages by using "pip install (opencv-python, face_recognition)".
+In the PyCharm project terminal, install the remaining required packages by using "pip install (opencv-python, face_recognition, cryptography, fernet)".
 
 Download [cutout.png](https://github.com/lucaxbandini/VisageGuard/tree/main/Photos/cutout.png) and [shape_predictor_68_face_landmarks.dat](https://github.com/italojs/facial-landmarks-recognition/blob/master/shape_predictor_68_face_landmarks.dat). Place these files in the same .venv directory as the current version file.
 
@@ -50,7 +50,7 @@ After this, you can run VisageGuard to try it for yourself by clicking the green
 
 - On versions past 0.16, pressing "Start" before enrolling a user will automatically lock your PC.
 
-- Versions 0.18 and 0.19 are a little weird with detecting known faces. If either gives you problems, use version 0.17 or 0.17.1
+- Versions 0.18, 0.19, and 0.21 are a little weird with detecting known faces. If either gives you problems, use version 0.17 or 0.17.1
   
 - If you use either of the alternative versions listed above, they will appear to lag a little but run as intended. I hadn't optimized the camera feed yet.
 
