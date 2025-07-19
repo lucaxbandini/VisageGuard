@@ -34,7 +34,7 @@ View this [article](https://medium.com/analytics-vidhya/how-to-install-dlib-libr
 
 ## Setting up the PyCharm project
 
-In the PyCharm project terminal, install the remaining required packages by using "pip install (opencv-python, face_recognition, cryptography, fernet)".
+In the PyCharm project terminal, install the remaining required packages by using "pip install opencv-python, face_recognition, cryptography, fernet".
 
 Download [cutout.png](https://github.com/lucaxbandini/VisageGuard/tree/main/Photos/cutout.png) and [shape_predictor_68_face_landmarks.dat](https://github.com/italojs/facial-landmarks-recognition/blob/master/shape_predictor_68_face_landmarks.dat). Place these files in the same .venv directory as the current version file.
 
