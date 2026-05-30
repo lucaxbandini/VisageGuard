@@ -1,9 +1,31 @@
 # What is VisageGuard?
 
-VisageGuard is a PC locker that works based on facial recognition. 
+VisageGuard is a biometric authentication and workstation protection system developed in Python. It leverages facial recognition and liveness detection to verify user identity, automatically lock workstations when unauthorized access is detected, and strengthen endpoint security through continuous identity verification.
 
-It currently includes a few features such as user enrollment, facial recognition and detection, a basic settings panel, and "dark mode".
+The project was developed as a cybersecurity capstone project and demonstrates practical applications of computer vision, machine learning, and access control technologies in endpoint security.
 
+# Key Features
+
+* Biometric user authentication using facial recognition
+* Blink-based liveness detection to mitigate photo spoofing attempts
+* Automated workstation locking on unauthorized access
+* Multi-user enrollment and management
+* Real-time facial detection and identity verification
+* Configurable authentication settings
+* Local endpoint security monitoring
+* Python-based desktop application with graphical user interface
+
+# Technologies Used
+
+- Python
+- OpenCV
+- dlib
+- Tkinter
+- face_recognition
+- Cryptography
+- Computer Vision
+- Machine Learning
+  
 # Setup
 
 For a complete step-by-step guide, click [here](https://github.com/lucaxbandini/VisageGuard/blob/main/Step-By-Step-Guide.md).
@@ -54,23 +76,13 @@ After this, you can run VisageGuard to try it for yourself by clicking the green
   
 - If you use either of the alternative versions listed above, they will appear to lag a little but run as intended. I hadn't optimized the camera feed yet.
 
-# Current Known Issues
+# Known Issues
 
-- Pressing "Start" will not immediately start detection; give it a few seconds and a window will appear.
-
-- Pressing "Enroll User" will not immediately open the input window; give it a few seconds.
-
-- Pressing "Stop" after pressing "Start" will cause the program to freeze.
-
-- In the settings tab, pressing the "Enter" button on your keyboard will not work; click "Save".
-
-- After your PC locks, press "Stop", then press "Start" to restart detection.
-
-- Dark mode does not work as intended.
+- Detection startup may require several seconds.
+- Application restart required after workstation lock.
+- UI performance improvements planned.
 
 # Features to be Added (Listed by Priority)
-  
-- Enhanced performance and error handling
   
 - A better UI
   
