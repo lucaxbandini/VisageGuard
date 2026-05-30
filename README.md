@@ -25,6 +25,16 @@ The project was developed as a cybersecurity capstone project and demonstrates p
 - Cryptography
 - Computer Vision
 - Machine Learning
+
+# Security Concepts Demonstrated
+
+- Biometric Authentication
+- Access Control
+- Identity Verification
+- Endpoint Security
+- User Monitoring
+- Anti-Spoofing Techniques
+- Secure Application Development
   
 # Setup
 
