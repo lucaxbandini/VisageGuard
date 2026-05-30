@@ -1,6 +1,6 @@
 # What is VisageGuard?
 
-VisageGuard is a biometric authentication and workstation protection system developed in Python. It leverages facial recognition and liveness detection to verify user identity, automatically lock workstations when unauthorized access is detected, and strengthen endpoint security through continuous identity verification.
+VisageGuard is a biometric authentication and workstation protection system developed in Python. It leverages facial recognition and liveness detection to verify user identity, automatically lock workstations when authentication fails or an unauthorized user is detected, and strengthen endpoint security through continuous identity verification.
 
 The project was developed as a cybersecurity capstone project and demonstrates practical applications of computer vision, machine learning, and access control technologies in endpoint security.
 
